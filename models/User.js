@@ -1,8 +1,7 @@
 import mongoose from 'mongoose';
 import { ROLES } from '../constants/Roles.js';
 import { PERMISSIONS } from '../constants/Permission.js';
-import {hasPermission} from "../middleware/UserMiddleware.js";
-import bcrypt from "bcrypt";
+import {comparePassword, hashPassword, hasPermission} from "../middleware/UserMiddleware.js";
 
 const userSchema = new mongoose.Schema({
     username: {
@@ -47,18 +46,8 @@ const userSchema = new mongoose.Schema({
     }
 });
 
-userSchema.pre("save", async function (next) {
-    if (this.isModified("password")) {
-        this.password = await bcrypt.hash(this.password, 10);
-    }
-    next();
-})
-
-
-userSchema.methods.comparePassword = function (password) {
-    return bcrypt.compare(password, this.password)
-}
-
+userSchema.pre("save", hashPassword)
+userSchema.methods.comparePassword = comparePassword
 userSchema.statics.hasPermission = hasPermission;
 
 export default mongoose.model('User', userSchema);
