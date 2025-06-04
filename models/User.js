@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 import { ROLES } from '../constants/Roles.js';
 import { PERMISSIONS } from '../constants/Permission.js';
-
+import {hasPermission} from "../middleware/UserMiddleware.js";
 import bcrypt from "bcrypt";
 
 const userSchema = new mongoose.Schema({
@@ -59,12 +59,6 @@ userSchema.methods.comparePassword = function (password) {
     return bcrypt.compare(password, this.password)
 }
 
-userSchema.statics.hasPermission = function(role, permission) {
-    const PERMISSION_MATRIX = {
-        [ROLES.USER]: [PERMISSIONS.VIEW_PROFILE, PERMISSIONS.EDIT_PROFILE],
-        [ROLES.ADMIN]: Object.values(PERMISSIONS)
-    };
-    return PERMISSION_MATRIX[role]?.includes(permission) || false;
-};
+userSchema.statics.hasPermission = hasPermission;
 
 export default mongoose.model('User', userSchema);
