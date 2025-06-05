@@ -24,9 +24,7 @@ export const addProduct = async (req, res) => {
     try {
         const { name, description, price, quantity, category, media, id } = req.body;
         const user = await User.findById(id);
-        if (User.hasPermission(user.role, 'ADD_PRODUCT') === false) {
-            return res.status(403).json({ message: "You do not have permission to add products" });
-        }
+        if (User.hasPermission(user.role, 'ADD_PRODUCT') === false) return res.status(403).json({ message: "You do not have permission to add products" });
         const newProduct = new Product({ name, description, price, quantity, category, media });
         await newProduct.save();
         return res.status(201).json(newProduct);

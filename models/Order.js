@@ -43,7 +43,6 @@ const orderSchema = new mongoose.Schema({
         type: Date,
         required: function() { return this.paymentStatus === 'paid'; }
     },
-    paymentIntentId: String,
     expectedDeliveryDate: Date,
     deliveredAt: Date,
     cartItems: {
