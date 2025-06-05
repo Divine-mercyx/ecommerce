@@ -3,7 +3,7 @@ import User from "../models/User.js";
 
 export const getUserOrders = async (req, res) => {
     try {
-        const orders = await Order.findOne({ userId: req.params.id})
+        const orders = await Order.find({ userId: req.params.id})
         if (!orders) return res.status(404).json({ message: "No orders found for this user" });
         return res.status(200).json(orders);
     } catch (error) {
@@ -56,7 +56,7 @@ export const orderItems = async (req, res) => {
         const { userId, shippingAddress, phoneNumber, orderStatus, totalAmount, paymentStatus, paymentMethod, paymentDate, expectedDeliveryDate, deliveredAt, cartItems } = req.body;
         const user = await User.findById(userId);
         if (!user) return res.status(404).json({ message: "No user found for this user" });
-        if (User.hasPermission(user.role, 'ORDER_ITEM') === false) return res.status(403).json({ message: "You do not have permission to order item" });
+        if (User.hasPermission(user.role, 'order_item') === false) return res.status(403).json({ message: "You do not have permission to order item" });
         const order = new Order({
             userId,
             shippingAddress,

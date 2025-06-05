@@ -15,7 +15,7 @@ export const comparePassword = function (password) {
 
 export const hasPermission = function(role, permission) {
     const PERMISSION_MATRIX = {
-        [ROLES.USER]: [PERMISSIONS.VIEW_PROFILE, PERMISSIONS.EDIT_PROFILE],
+        [ROLES.USER]: [PERMISSIONS.ORDER_ITEM, PERMISSIONS.CANCEL_ORDER, PERMISSIONS.ADD_PRODUCT],
         [ROLES.ADMIN]: Object.values(PERMISSIONS)
     };
     return PERMISSION_MATRIX[role]?.includes(permission) || false;
