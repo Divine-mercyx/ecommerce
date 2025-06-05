@@ -6,4 +6,3 @@ export const PERMISSIONS = {
     CANCEL_ORDER: 'cancel_order',
     DELIVER_ORDER: 'deliver_order',
 };
-
